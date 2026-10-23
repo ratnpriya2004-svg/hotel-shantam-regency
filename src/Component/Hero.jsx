@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ArrowDown, ArrowUpRight, MapPin, Sparkles } from "lucide-react";
 import heroImage from "../assets/image/buil.webp";
 
-export default function Hero() {
+export default function Hero({ onBookingClick }) {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -16,7 +16,6 @@ export default function Hero() {
       className="overflow-hidden bg-[#F7F0E6] text-[#29342D]"
     >
       <div className="mx-auto max-w-[1440px] px-5 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10 lg:px-12 lg:pt-12">
-        {/* Text Left + Image Right */}
         <div className="grid items-center gap-9 md:grid-cols-[0.85fr_1.15fr] md:gap-10 lg:gap-16">
           {/* Left Content */}
           <div
@@ -106,8 +105,10 @@ export default function Hero() {
                     </span>
                   </h2>
 
-                  <a
-                    href="#contact"
+                  {/* Open Booking Enquiry Popup */}
+                  <button
+                    type="button"
+                    onClick={onBookingClick}
                     className="group/link mt-4 inline-flex items-center gap-2 border border-white/60 bg-white/10 px-4 py-2.5 text-xs text-white backdrop-blur-sm transition-all duration-300 hover:border-[#D9B96D] hover:bg-[#C6A15B]"
                   >
                     Contact the Hotel
@@ -115,7 +116,7 @@ export default function Hero() {
                       size={15}
                       className="transition-transform duration-300 group-hover/link:translate-x-1 group-hover/link:-translate-y-1"
                     />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

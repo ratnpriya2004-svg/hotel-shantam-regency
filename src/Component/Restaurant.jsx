@@ -2,12 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
   UtensilsCrossed,
-  Clock,
   Coffee,
 } from "lucide-react";
 import restaurantImage from "../assets/image/luch.webp";
 
-export default function Restaurant() {
+export default function Restaurant({ onBookingClick }) {
   const sectionRef = useRef(null);
   const [visible, setVisible] = useState(false);
 
@@ -26,6 +25,7 @@ export default function Restaurant() {
     );
 
     observer.observe(element);
+
     return () => observer.disconnect();
   }, []);
 
@@ -60,6 +60,7 @@ export default function Restaurant() {
                   <p className="text-[10px] uppercase tracking-[0.24em] text-[#F0D69B]">
                     Hotel Shantam Regency
                   </p>
+
                   <p className="mt-2 font-serif text-2xl sm:text-3xl">
                     A place to dine.
                   </p>
@@ -72,7 +73,7 @@ export default function Restaurant() {
             </div>
           </div>
 
-          {/* Small decorative accent */}
+          {/* Decorative Accent */}
           <div className="absolute -bottom-3 -right-3 -z-0 h-20 w-20 border-b border-r border-[#C6A15B] sm:-bottom-4 sm:-right-4 sm:h-28 sm:w-28" />
         </div>
 
@@ -86,6 +87,7 @@ export default function Restaurant() {
         >
           <div className="mb-6 flex items-center gap-3">
             <span className="h-px w-9 bg-[#C6A15B]" />
+
             <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#997B43]">
               A Place to Dine
             </p>
@@ -104,16 +106,18 @@ export default function Restaurant() {
             options, restaurant timings and group dining arrangements.
           </p>
 
-          {/* Information points */}
+          {/* Information Points */}
           <div className="mt-7 grid gap-4 border-y border-[#E4DACA] py-5 sm:grid-cols-2 sm:gap-6">
             <div className="flex items-start gap-3">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center border border-[#D9CBAF] text-[#A9853E]">
                 <UtensilsCrossed size={19} />
               </span>
+
               <div>
                 <h3 className="font-serif text-base text-[#29342D]">
                   Restaurant
                 </h3>
+
                 <p className="mt-1 text-xs leading-5 text-[#77766D]">
                   On-site dining facility
                 </p>
@@ -124,10 +128,12 @@ export default function Restaurant() {
               <span className="flex h-10 w-10 shrink-0 items-center justify-center border border-[#D9CBAF] text-[#A9853E]">
                 <Coffee size={19} />
               </span>
+
               <div>
                 <h3 className="font-serif text-base text-[#29342D]">
                   Breakfast
                 </h3>
+
                 <p className="mt-1 text-xs leading-5 text-[#77766D]">
                   Availability depends on your booking
                 </p>
@@ -135,17 +141,19 @@ export default function Restaurant() {
             </div>
           </div>
 
-          {/* Enquiry button */}
-          <a
-            href="#contact"
+          {/* Restaurant Enquiry Button */}
+          <button
+            type="button"
+            onClick={onBookingClick}
             className="group mt-8 inline-flex min-h-12 items-center justify-center gap-3 border border-[#C6A15B] bg-[#C6A15B] px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:border-[#A9853E] hover:bg-[#A9853E]"
           >
             Restaurant Enquiry
+
             <ArrowUpRight
               size={17}
               className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
             />
-          </a>
+          </button>
 
           <p className="mt-4 text-xs leading-6 text-[#858073]">
             Please contact the hotel to confirm the current menu, prices
@@ -156,3 +164,4 @@ export default function Restaurant() {
     </section>
   );
 }
+
