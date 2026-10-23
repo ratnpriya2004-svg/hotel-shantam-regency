@@ -341,6 +341,53 @@ export default function Settings() {
     }
   };
 
+const handleEmailChange = async (newEmail) => {
+  const email = newEmail.trim().toLowerCase();
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    setNotice({
+      type: "error",
+      message: "Please enter a valid email address.",
+    });
+    return;
+  }
+
+  try {
+    setNotice(null);
+
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError) throw userError;
+
+    if (!user) {
+      throw new Error("Please log in before changing your email.");
+    }
+
+    const { error } = await supabase.auth.updateUser({
+      email,
+    });
+
+    if (error) throw error;
+
+    setNotice({
+      type: "success",
+      message:
+        "Email change requested. Please check your email inbox and complete the confirmation steps.",
+    });
+  } catch (error) {
+    console.error("Admin email update failed:", error);
+
+    setNotice({
+      type: "error",
+      message: error.message || "Failed to update admin email.",
+    });
+  }
+};
+
+
   const activeTabInfo = TABS.find((tab) => tab.id === activeTab);
 
   return (
