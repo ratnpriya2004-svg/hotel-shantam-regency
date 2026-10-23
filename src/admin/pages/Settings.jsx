@@ -283,13 +283,13 @@ export default function Settings() {
   // Change the password of the currently authenticated Supabase user.
   const handlePasswordChange = async (event) => {
     event.preventDefault();
+    setNotice(null);
 
     if (newPassword.length < 8) {
       setNotice({
         type: "error",
         message: "Password must contain at least 8 characters.",
       });
-
       return;
     }
 
@@ -298,39 +298,40 @@ export default function Settings() {
         type: "error",
         message: "Passwords do not match.",
       });
-
       return;
     }
 
     setChangingPassword(true);
-    setNotice(null);
 
     try {
-      const { data, error: sessionError } =
-        await supabase.auth.getSession();
+      const {
+        data: { session },
+        error: sessionError,
+      } = await supabase.auth.getSession();
 
       if (sessionError) throw sessionError;
-
-      if (!data.session) {
+      if (!session?.user) {
         throw new Error("Please log in before changing your password.");
       }
 
-      const { error } = await supabase.auth.updateUser({
+      // Ensure we update the password for the currently signed-in account.
+      const { data, error } = await supabase.auth.updateUser({
         password: newPassword,
       });
 
       if (error) throw error;
+      if (!data?.user?.id || data.user.id !== session.user.id) {
+        throw new Error("Could not verify the updated account. Please sign in again and retry.");
+      }
 
       setNewPassword("");
       setConfirmPassword("");
-
       setNotice({
         type: "success",
-        message: "Password updated successfully.",
+        message: "Supabase accepted the password update. Log out and test the new password.",
       });
     } catch (error) {
       console.error("Password update error:", error);
-
       setNotice({
         type: "error",
         message: getErrorMessage(error),
@@ -415,7 +416,7 @@ export default function Settings() {
 
         {/* Main content */}
         <section className="min-w-0 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
-          <form onSubmit={handleSubmit}>
+          <div>
             <div className="flex items-center justify-between gap-3 border-b border-stone-100 p-5 sm:p-6">
               <div className="min-w-0">
                 <h2 className="font-anta text-lg text-stone-900">
@@ -740,7 +741,8 @@ export default function Settings() {
                 </button>
 
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleSubmit}
                   disabled={loading || saving}
                   className="inline-flex items-center gap-2 rounded-xl bg-amber-700 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
@@ -754,7 +756,7 @@ export default function Settings() {
                 </button>
               </div>
             )}
-          </form>
+          </div>
         </section>
       </div>
     </div>
