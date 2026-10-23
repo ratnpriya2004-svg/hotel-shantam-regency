@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme 
+{ --font-serif: "IBM Plex Serif", 
+  Georgia, serif; --font-anta: "Anta", 
+  sans-serif; --font-changa: "Changa", 
+  sans-serif; --font-decorative: "Jim Nightshade",
+  cursive; --font-hindi: "Tiro Devanagari Hindi",
+   serif; --font-signature: "Updock", cursive; }
+
+@theme {
+  --font-anta: "Anta", sans-serif;
+  --font-serif: "IBM Plex Serif", Georgia, serif;
+  --font-display: "Anta", sans-serif;
+  --font-decorative: "Jim Nightshade", cursive;
+  --font-hindi: "Tiro Devanagari Hindi", serif;
+  --font-signature: "Updock", cursive;
+}
+
+:root {
+  font-family: "IBM Plex Serif", Georgia, serif;
+  color: #29342D;
+  background-color: #F7F0E6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+section[id] {
+  scroll-margin-top: 88px;
+}
+
+::selection {
+  background: #174D3A;
+  color: #F8F5ED;
+}
+
