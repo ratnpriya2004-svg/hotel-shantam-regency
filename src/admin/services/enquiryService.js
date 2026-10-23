@@ -11,20 +11,15 @@ export const STATUS_OPTIONS = [
 
 // Fetch all enquiries from Supabase
 export async function getEnquiries() {
-  console.log("🔍 Fetching enquiries from Supabase...");
-
   const { data, error } = await supabase
     .from("enquiries")
     .select("*")
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error("❌ Supabase Fetch Error:", error);
+    console.error("Failed to fetch enquiries:", error.message);
     throw new Error(error.message);
   }
-
-  console.log("✅ Enquiries received:", data);
-  console.log("📊 Total enquiries:", data?.length ?? 0);
 
   return data ?? [];
 }
@@ -81,17 +76,15 @@ export async function updateEnquiryStatus(id, status) {
     .select();
 
   if (error) {
-    console.error("❌ Failed to update enquiry status:", error);
+    console.error("Failed to update enquiry status:", error.message);
     throw new Error(error.message);
   }
 
   if (!data || data.length === 0) {
     throw new Error(
-      "Enquiry update nahi hui. Supabase permissions aur enquiry ID check karo."
+      "Enquiry update nahi hui. Admin permissions aur enquiry ID check karo."
     );
   }
-
-  console.log("✅ Enquiry status updated:", data[0]);
 
   return data[0];
 }
@@ -109,17 +102,15 @@ export async function deleteEnquiry(id) {
     .select("id");
 
   if (error) {
-    console.error("❌ Failed to delete enquiry:", error);
+    console.error("Failed to delete enquiry:", error.message);
     throw new Error(error.message);
   }
 
   if (!data || data.length === 0) {
     throw new Error(
-      "Enquiry delete nahi hui. Supabase permissions aur enquiry ID check karo."
+      "Enquiry delete nahi hui. Admin permissions aur enquiry ID check karo."
     );
   }
-
-  console.log("✅ Enquiry deleted:", data[0].id);
 
   return data[0];
 }
