@@ -8,10 +8,10 @@ import {
   CalendarDays,
 } from "lucide-react";
 
-import StatCard from "../components/StatCard.jsx";
-import EnquiryChart from "../components/EnquiryChart.jsx";
-import EnquiryTrend from "../components/EnquiryTrend.jsx";
-import RecentEnquiries from "../components/RecentEnquiries.jsx";
+import StatCard from "../Components/StatCard.jsx";
+import EnquiryChart from "../Components/EnquiryChart.jsx";
+import EnquiryTrend from "../Components/EnquiryTrend.jsx";
+import RecentEnquiries from "../Components/RecentEnquiries.jsx";
 
 import {
   getEnquiries,
