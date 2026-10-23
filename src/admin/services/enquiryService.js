@@ -10,7 +10,6 @@ export const STATUS_OPTIONS = [
 ];
 
 // Fetch all enquiries from Supabase
-
 export async function getEnquiries() {
   console.log("🔍 Fetching enquiries from Supabase...");
 
@@ -29,8 +28,6 @@ export async function getEnquiries() {
 
   return data ?? [];
 }
-
-
 
 // Fetch enquiry statistics
 export async function getEnquiryStats() {
@@ -70,7 +67,6 @@ export async function updateEnquiryStatus(id, status) {
     throw new Error("Enquiry ID is required.");
   }
 
-  // Accept only the exact status values allowed by the database
   if (!STATUS_OPTIONS.includes(status)) {
     throw new Error("Invalid enquiry status.");
   }
@@ -82,15 +78,22 @@ export async function updateEnquiryStatus(id, status) {
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)
-    .select()
-    .single();
+    .select();
 
   if (error) {
-    console.error("Failed to update enquiry status:", error.message);
+    console.error("❌ Failed to update enquiry status:", error);
     throw new Error(error.message);
   }
 
-  return data;
+  if (!data || data.length === 0) {
+    throw new Error(
+      "Enquiry update nahi hui. Supabase permissions aur enquiry ID check karo."
+    );
+  }
+
+  console.log("✅ Enquiry status updated:", data[0]);
+
+  return data[0];
 }
 
 // Delete an enquiry
@@ -103,13 +106,21 @@ export async function deleteEnquiry(id) {
     .from("enquiries")
     .delete()
     .eq("id", id)
-    .select("id")
-    .single();
+    .select("id");
 
   if (error) {
-    console.error("Failed to delete enquiry:", error.message);
+    console.error("❌ Failed to delete enquiry:", error);
     throw new Error(error.message);
   }
 
-  return data;
+  if (!data || data.length === 0) {
+    throw new Error(
+      "Enquiry delete nahi hui. Supabase permissions aur enquiry ID check karo."
+    );
+  }
+
+  console.log("✅ Enquiry deleted:", data[0].id);
+
+  return data[0];
 }
+
