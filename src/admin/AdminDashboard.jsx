@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import AdminSidebar from "./components/AdminSidebar.jsx";
-import AdminHeader from "./components/AdminHeader.jsx";
+import AdminSidebar from "./Components/AdminSidebar.jsx";
+import AdminHeader from "./Components/AdminHeader.jsx";
 
 import Overview from "./pages/Overview.jsx";
 import Enquiries from "./pages/Enquiries.jsx";
