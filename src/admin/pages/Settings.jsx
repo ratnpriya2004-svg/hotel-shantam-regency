@@ -135,6 +135,7 @@ export default function Settings() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [changingPassword, setChangingPassword] = useState(false);
+  const [changingEmail, setChangingEmail] = useState(false);
 
   const updateSetting = (key, value) => {
     setSettings((current) => ({
@@ -341,52 +342,63 @@ export default function Settings() {
     }
   };
 
-const handleEmailChange = async (newEmail) => {
-  const email = newEmail.trim().toLowerCase();
 
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    setNotice({
-      type: "error",
-      message: "Please enter a valid email address.",
-    });
-    return;
-  }
+  // Request a change to the authenticated Supabase account email.
+  // Supabase may require confirmation before the new email becomes active.
+  const handleEmailChange = async () => {
+    const email = String(settings.adminEmail || "")
+      .trim()
+      .toLowerCase();
 
-  try {
-    setNotice(null);
-
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-
-    if (userError) throw userError;
-
-    if (!user) {
-      throw new Error("Please log in before changing your email.");
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setNotice({
+        type: "error",
+        message: "Please enter a valid administrator email address.",
+      });
+      return;
     }
 
-    const { error } = await supabase.auth.updateUser({
-      email,
-    });
+    setChangingEmail(true);
+    setNotice(null);
 
-    if (error) throw error;
+    try {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
 
-    setNotice({
-      type: "success",
-      message:
-        "Email change requested. Please check your email inbox and complete the confirmation steps.",
-    });
-  } catch (error) {
-    console.error("Admin email update failed:", error);
+      if (userError) throw userError;
+      if (!user) throw new Error("Please log in before changing your login email.");
 
-    setNotice({
-      type: "error",
-      message: error.message || "Failed to update admin email.",
-    });
-  }
-};
+      if (user.email?.toLowerCase() === email) {
+        setNotice({
+          type: "error",
+          message: "This is already the email for your signed-in account.",
+        });
+        return;
+      }
 
+      const { data, error } = await supabase.auth.updateUser({ email });
+      if (error) throw error;
+
+      // Keep the display field aligned with the requested email in the form.
+      // Save Changes still persists profile display information to admin_settings.
+      setNotice({
+        type: "success",
+        message: data?.user?.new_email
+          ? `Email change requested. Confirm the change using the email sent to ${email}.`
+          : `Email change request submitted for ${email}. Check your inbox (and spam folder) for confirmation. The change may remain pending until confirmed.`,
+      });
+    } catch (error) {
+      console.error("Email update error:", error);
+      setNotice({
+        type: "error",
+        message: getErrorMessage(error),
+      });
+    } finally {
+      setChangingEmail(false);
+    }
+  };
 
   const activeTabInfo = TABS.find((tab) => tab.id === activeTab);
 
@@ -570,15 +582,26 @@ const handleEmailChange = async (newEmail) => {
                         placeholder="Enter administrator email"
                       />
 
+                      <div className="sm:col-span-2">
+                        <button
+                          type="button"
+                          onClick={handleEmailChange}
+                          disabled={changingEmail || loading || saving}
+                          className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-700 px-5 py-3 text-sm font-medium text-white transition hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          {changingEmail && (
+                            <RefreshCw size={15} className="animate-spin" />
+                          )}
+                          {changingEmail ? "Requesting Email Change..." : "Update Login Email"}
+                        </button>
+                      </div>
+
                       <div className="rounded-xl border border-amber-100 bg-amber-50 p-4 sm:col-span-2">
                         <p className="text-sm font-medium text-amber-900">
                           Admin profile information
                         </p>
-
                         <p className="mt-2 text-xs leading-relaxed text-amber-800">
-                          These fields store the administrator's display
-                          information. They do not change the authenticated
-                          Supabase account email.
+                          Administrator Name and Email are also saved as profile display information when you click Save Changes. Use Update Login Email to request a change to the currently authenticated Supabase account. Supabase may require email confirmation before the login email changes.
                         </p>
                       </div>
                     </div>
