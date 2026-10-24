@@ -5,20 +5,14 @@ import AdminHeader from "./Components/AdminHeader.jsx";
 
 import Overview from "./pages/Overview.jsx";
 import Enquiries from "./pages/Enquiries.jsx";
-import Rooms from "./pages/Rooms.jsx";
-import Events from "./pages/Events.jsx";
-import Restaurant from "./pages/Restaurant.jsx";
-import Guests from "./pages/Guests.jsx";
+import Blogs from "./pages/Blogs.jsx";
 import Reports from "./pages/Reports.jsx";
 import Settings from "./pages/Settings.jsx";
 
 const pages = {
   Overview,
   Enquiries,
-  Rooms,
-  "Events & Banquets": Events,
-  Restaurant,
-  Guests,
+  Blogs: Blogs,
   Reports,
   Settings,
 };

@@ -9,15 +9,13 @@ import {
   Settings,
   X,
   Hotel,
+  Newspaper,
 } from "lucide-react";
 
 const menuItems = [
   { label: "Overview", icon: LayoutDashboard },
   { label: "Enquiries", icon: MessageSquare },
-  { label: "Rooms", icon: BedDouble },
-  { label: "Events & Banquets", icon: CalendarDays },
-  { label: "Restaurant", icon: Utensils },
-  { label: "Guests", icon: Users },
+  { label: "Blogs", icon: Newspaper }, 
   { label: "Reports", icon: ChartNoAxesCombined },
   { label: "Settings", icon: Settings },
 ];

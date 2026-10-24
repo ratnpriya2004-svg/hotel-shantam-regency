@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -6,92 +5,76 @@ import {
   Navigate,
 } from "react-router-dom";
 
-import Header from "./Component/Header.jsx";
-import Hero from "./Component/Hero.jsx";
-import Rooms from "./Component/Rooms.jsx";
-import Events from "./Component/Events.jsx";
-import Facilities from "./Component/Facilities.jsx";
-import Restaurant from "./Component/Restaurant.jsx";
-import Gallery from "./Component/Gallery.jsx";
-import About from "./Component/About.jsx";
-import Contact from "./Component/Contact.jsx";
-import Footer from "./Component/Footer.jsx";
-import Scroll from "./Component/ScrollToTop.jsx";
-
-import BookingEnquiry from "./admin/Components/BookingEnquiry.jsx";
+import Home from "./Website/Home.jsx";
+import RoomsPage from "./Website/RoomsPage.jsx";
+import WeddingsEventsPage from "./Website/WeddingsEventsPage.jsx";
 
 import AdminLogin from "./admin/AdminLogin.jsx";
 import AdminRoute from "./admin/AdminRoute.jsx";
 import AdminDashboard from "./admin/AdminDashboard.jsx";
-
-function HotelWebsite() {
-  const [bookingOpen, setBookingOpen] = useState(false);
-
-  const openBooking = () => setBookingOpen(true);
-  const closeBooking = () => setBookingOpen(false);
-
-  return (
-    <div className="min-h-screen overflow-hidden bg-[#F8F5ED] text-[#1F2D28]">
-      <Header onBookingClick={openBooking} />
-
-      <main className="pt-[78px]">
-        <Hero onBookingClick={openBooking} />
-
-        <Rooms onBookingClick={openBooking} />
-
-        <Events onBookingClick={openBooking} />
-
-        <Facilities />
-
-        <Restaurant onBookingClick={openBooking} />
-
-        <About />
-
-        <Gallery />
-
-        <Contact onBookingClick={openBooking} />
-
-        <Scroll />
-      </main>
-
-      <Footer />
-
-      {/* Booking Enquiry Popup */}
-      <BookingEnquiry
-        isOpen={bookingOpen}
-        onClose={closeBooking}
-      />
-    </div>
-  );
-}
+import EventVenuePage from "./Website/EventVenuePage.jsx";
+import RestaurantPage from "./Website/RestaurantPage.jsx";
+import GalleryPage from "./Website/GalleryPage.jsx";
+import BlogPage from "./Website/BlogPage";
+import WeddingPackagePage from "./Website/WeddingPackagePage";
+import ContactPage from "./Website/Contact.jsx";
+import BlogDetailPage from "./Website/BlogDetailPage.jsx";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Hotel Website */}
-        <Route path="/" element={<HotelWebsite />} />
+  <Route path="/" element={<Home />} />
 
-        {/* Admin Login */}
-        <Route path="/admin" element={<AdminLogin />} />
+  <Route path="/rooms" element={<RoomsPage />} />
 
-        {/* Protected Admin Dashboard */}
-        <Route element={<AdminRoute />}>
-          <Route
-            path="/admin/dashboard"
-            element={<AdminDashboard />}
-          />
-        </Route>
+  <Route
+    path="/banquet-hall-in-bhagalpur"
+    element={<WeddingsEventsPage />}
+  />
 
-        {/* Unknown Admin Routes */}
-        <Route
-          path="/admin/*"
-          element={<Navigate to="/admin" replace />}
-        />
+  <Route
+  path="/event-venue-in-bhagalpur"
+  element={<EventVenuePage />}
+/>
 
-        {/* Other Website Paths */}
-        <Route path="*" element={<HotelWebsite />} />
-      </Routes>
+<Route path="/restaurant" element={<RestaurantPage />} />
+
+<Route path="/gallery" element={<GalleryPage />} />
+
+<Route path="/blog" element={<BlogPage />} />
+
+<Route path="/wedding-package-bhagalpur" element={<WeddingPackagePage />} />
+
+{/* Contact Page */} 
+<Route path="/contact" element={<ContactPage />} />
+
+<Route path="/blog/:id" element={<BlogDetailPage />} />
+
+  <Route path="/admin" element={<AdminLogin />} />
+
+  <Route element={<AdminRoute />}>
+    <Route
+      path="/admin/dashboard"
+      element={<AdminDashboard />}
+    />
+    <Route
+      path="/dashboard"
+      element={<AdminDashboard />}
+    />
+  </Route>
+
+  <Route
+    path="/admin/*"
+    element={<Navigate to="/admin" replace />}
+  />
+
+  <Route
+    path="*"
+    element={<Navigate to="/" replace />}
+  />
+</Routes>
+
     </BrowserRouter>
   );
 }

@@ -3,66 +3,61 @@ import { Navigate, Outlet } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 
 export default function AdminRoute() {
-  const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
+const [status, setStatus] = useState("checking");
 
-  useEffect(() => {
-    let active = true;
+useEffect(() => {
+let active = true;
 
-    const checkAdmin = async () => {
-      try {
-        const {
-          data: { session },
-          error,
-        } = await supabase.auth.getSession();
+async function verifyAdmin() {
+  try {
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-        if (error || !session) {
-          if (active) {
-            setIsAdmin(false);
-            setLoading(false);
-          }
-          return;
-        }
+    if (authError || !user) {
+      if (active) setStatus("denied");
+      return;
+    }
 
-        const { data, error: adminError } = await supabase
-          .from("admin_users")
-          .select("user_id")
-          .eq("user_id", session.user.id)
-          .maybeSingle();
+    const { data: admin, error: adminError } = await supabase
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id", user.id)
+      .maybeSingle();
 
-        if (active) {
-          setIsAdmin(!adminError && !!data);
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error("Admin verification failed:", error);
+    if (adminError) {
+      console.error("Admin verification failed:", adminError);
+      if (active) setStatus("denied");
+      return;
+    }
 
-        if (active) {
-          setIsAdmin(false);
-          setLoading(false);
-        }
-      }
-    };
-
-    checkAdmin();
-
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#F8F5ED]">
-        <div className="h-9 w-9 animate-spin rounded-full border-4 border-amber-200 border-t-amber-600" />
-      </div>
-    );
+    if (active) {
+      setStatus(admin ? "allowed" : "denied");
+    }
+  } catch (error) {
+    console.error("Authentication check failed:", error);
+    if (active) setStatus("denied");
   }
-
-  if (!isAdmin) {
-    return <Navigate to="/admin" replace />;
-  }
-
-  return <Outlet />;
 }
 
+verifyAdmin();
+
+return () => {
+  active = false;
+};
+
+
+}, []);
+
+if (status === "checking") {
+return ( <div className="flex min-h-screen items-center justify-center bg-[#F8F5ED]"> <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#D9CBAF] border-t-[#C6A15B]" /> </div>
+);
+}
+
+if (status === "denied") {
+return <Navigate to="/admin" replace />;
+}
+
+return <Outlet />;
+}
