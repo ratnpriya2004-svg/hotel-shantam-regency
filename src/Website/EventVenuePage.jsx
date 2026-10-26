@@ -18,10 +18,10 @@ import Footer from "../Component/Footer.jsx";
 import BookingEnquiry from "../admin/Components/BookingEnquiry.jsx";
 
 // All 8 event images
-import eventVenueImage from "../assets/image/birt.webp";
+import eventVenueImage from "../assets/image/event.webp";
 import conferenceImage from "../assets/image/wor.webp";
 import babyCelebrationImage from "../assets/image/baby.webp";
-import birthdayDecorImage from "../assets/image/chhi.webp";
+import birthdayDecorImage from "../assets/image/event.webp";
 import pinkBirthdayImage from "../assets/image/birt.webp";
 import venueInteriorImage from "../assets/image/ven.webp";
 import conferenceRoomImage from "../assets/image/ch.webp";

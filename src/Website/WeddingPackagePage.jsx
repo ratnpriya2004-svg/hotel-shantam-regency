@@ -3,10 +3,10 @@ import Header from "../Component/Header";
 import Footer from "../Component/Footer";
 
 import weddingImage from "../assets/image/m.webp";
-import lawnImage from "../assets/image/ven.webp";
-import stageImage from "../assets/image/baby.webp";
-import celebrationImage from "../assets/image/birt.webp";
-import roomImage from "../assets/image/rrrrom.webp";
+import lawnImage from "../assets/image/de.webp";
+import stageImage from "../assets/image/event.webp";
+import celebrationImage from "../assets/image/dd.webp";
+import roomImage from "../assets/image/m.webp";
 
 const inclusions = [
   {
