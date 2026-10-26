@@ -59,4 +59,35 @@ section[id] {
   background: #174D3A;
   color: #F8F5ED;
 }
+.testimonial-slider {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
 
+.testimonial-track {
+  display: flex;
+  width: max-content;
+  gap: 24px;
+  animation: testimonialMoveRight 35s linear infinite;
+  will-change: transform;
+}
+
+.testimonial-card {
+  flex: 0 0 320px;
+  min-width: 0;
+}
+
+@keyframes testimonialMoveRight {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.testimonial-slider:hover .testimonial-track {
+  animation-play-state: paused;
+}

@@ -10,7 +10,7 @@ import Gallery from "../Component/Gallery.jsx";
 import About from "../Component/About.jsx";
 import Contact from "../Component/Contact.jsx";
 import Footer from "../Component/Footer.jsx";
-import Scroll from "../Component/ScrollToTop.jsx";
+import Testimonials from "../Component/Testimonials.jsx";
 
 import BookingEnquiry from "../admin/Components/BookingEnquiry.jsx";
 
@@ -46,11 +46,12 @@ export default function Home() {
         {/* Gallery */}
         <Gallery />
 
+        {/* Guest Testimonials / Reviews */}
+          <Testimonials onBookingClick={openBooking} />
+
         {/* Contact & Location */}
         <Contact onBookingClick={openBooking} />
 
-        {/* Scroll to Top */}
-        <Scroll />
       </main>
 
       <Footer />

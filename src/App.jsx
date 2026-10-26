@@ -9,6 +9,8 @@ import Home from "./Website/Home.jsx";
 import RoomsPage from "./Website/RoomsPage.jsx";
 import WeddingsEventsPage from "./Website/WeddingsEventsPage.jsx";
 
+import ScrollToTop from "./Component/ScrollToTop.jsx";
+
 import AdminLogin from "./admin/AdminLogin.jsx";
 import AdminRoute from "./admin/AdminRoute.jsx";
 import AdminDashboard from "./admin/AdminDashboard.jsx";
@@ -21,8 +23,10 @@ import ContactPage from "./Website/Contact.jsx";
 import BlogDetailPage from "./Website/BlogDetailPage.jsx";
 
 export default function App() {
-  return (
+    return (
     <BrowserRouter>
+      <ScrollToTop />
+
       <Routes>
   <Route path="/" element={<Home />} />
 

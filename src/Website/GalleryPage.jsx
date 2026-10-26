@@ -50,7 +50,7 @@ const categories = ["All", ...new Set(galleryImages.map((item) => item.category)
 
 export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
   const filteredImages = useMemo(
     () => activeCategory === "All"
@@ -58,6 +58,39 @@ export default function GalleryPage() {
       : galleryImages.filter((item) => item.category === activeCategory),
     [activeCategory]
   );
+
+  const selectedImage = selectedImageIndex !== null ? filteredImages[selectedImageIndex] : null;
+
+  const openImage = (index) => setSelectedImageIndex(index);
+  const closeImage = () => setSelectedImageIndex(null);
+  const showNextImage = () => {
+    setSelectedImageIndex((current) =>
+      current === null ? null : (current + 1) % filteredImages.length
+    );
+  };
+  const showPreviousImage = () => {
+    setSelectedImageIndex((current) =>
+      current === null ? null : (current - 1 + filteredImages.length) % filteredImages.length
+    );
+  };
+
+  useEffect(() => {
+    if (selectedImageIndex === null) return;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") closeImage();
+      if (event.key === "ArrowRight") showNextImage();
+      if (event.key === "ArrowLeft") showPreviousImage();
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [selectedImageIndex, filteredImages.length]);
 
   useEffect(() => {
     // Reveal each section and each gallery image as it enters the viewport.
@@ -246,7 +279,7 @@ export default function GalleryPage() {
               <button
                 key={`${item.title}-${item.category}`}
                 type="button"
-                onClick={() => setSelectedImage(item)}
+                onClick={() => openImage(index)}
                 className={`gallery-card group relative isolate block w-full overflow-hidden rounded-2xl bg-[#ded5c7] text-left shadow-sm ring-1 ring-black/5 transition duration-500 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a78245] ${
                   activeCategory === "All" ? item.size : ""
                 }`}
@@ -330,29 +363,58 @@ export default function GalleryPage() {
       </main>
       <Footer />
 
-      {/* Image lightbox */}
+      {/* Image lightbox with previous/next navigation */}
       {selectedImage && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm animate-[galleryModalFade_220ms_ease-out]"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-3 backdrop-blur-sm animate-[galleryModalFade_220ms_ease-out] sm:p-5"
           role="dialog"
           aria-modal="true"
           aria-label={selectedImage.title}
-          onClick={() => setSelectedImage(null)}
+          onClick={closeImage}
         >
           <button
             type="button"
-            onClick={() => setSelectedImage(null)}
-            className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-black/40 text-2xl text-white transition hover:bg-white hover:text-black"
+            onClick={(event) => { event.stopPropagation(); closeImage(); }}
+            className="absolute right-3 top-3 z-30 flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-black/50 text-3xl text-white transition hover:bg-white hover:text-black sm:right-5 sm:top-5"
             aria-label="Close image"
           >
             ×
           </button>
-          <div className="w-full max-w-5xl" onClick={(event) => event.stopPropagation()}>
-            <img src={selectedImage.image} alt={selectedImage.title} className="mx-auto max-h-[76vh] w-full rounded-xl object-contain" />
+
+          {filteredImages.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={(event) => { event.stopPropagation(); showPreviousImage(); }}
+                className="absolute left-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/50 text-3xl text-white transition hover:border-[#e5c58c] hover:bg-[#e5c58c] hover:text-black sm:left-5 sm:h-14 sm:w-14"
+                aria-label="Previous image"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                onClick={(event) => { event.stopPropagation(); showNextImage(); }}
+                className="absolute right-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/50 text-3xl text-white transition hover:border-[#e5c58c] hover:bg-[#e5c58c] hover:text-black sm:right-5 sm:h-14 sm:w-14"
+                aria-label="Next image"
+              >
+                ›
+              </button>
+            </>
+          )}
+
+          <div className="w-full max-w-5xl px-8 sm:px-16" onClick={(event) => event.stopPropagation()}>
+            <img
+              src={selectedImage.image}
+              alt={selectedImage.title}
+              className="mx-auto max-h-[68vh] w-full rounded-xl object-contain sm:max-h-[76vh]"
+            />
             <div className="mt-4 text-center">
               <p className="text-xs uppercase tracking-[0.25em] text-[#e5c58c]">{selectedImage.category}</p>
               <h3 className="mt-2 font-serif text-2xl text-white sm:text-3xl">{selectedImage.title}</h3>
-              <p className="mx-auto mt-2 max-w-2xl text-sm text-white/70">{selectedImage.description}</p>
+              <p className="mx-auto mt-2 max-w-2xl text-sm leading-6 text-white/70">{selectedImage.description}</p>
+              <p className="mt-3 text-xs tracking-widest text-white/50">
+                {selectedImageIndex + 1} / {filteredImages.length} &nbsp; · &nbsp; Use ← → keys to navigate &nbsp; · &nbsp; Esc to close
+              </p>
             </div>
           </div>
         </div>
