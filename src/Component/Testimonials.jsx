@@ -9,7 +9,8 @@ const testimonials = [
     review:
       "A wonderful experience! The rooms were clean, comfortable, and beautifully maintained. The staff was polite and always ready to help.",
     rating: 5,
-    avatar: "https://i.pravatar.cc/150?img=12",
+    avatar:
+      "https://images.pexels.com/photos/6498090/pexels-photo-6498090.jpeg",
   },
   {
     id: 2,
@@ -18,7 +19,8 @@ const testimonials = [
     review:
       "We had a lovely stay with our family. The atmosphere was peaceful, the service was excellent, and everything was well organised.",
     rating: 5,
-    avatar: "https://i.pravatar.cc/150?img=47",
+    avatar:
+      "https://images.pexels.com/photos/10620268/pexels-photo-10620268.jpeg",
   },
   {
     id: 3,
@@ -27,7 +29,8 @@ const testimonials = [
     review:
       "The hospitality was impressive, and the rooms were spacious. A comfortable place to relax after a long day of travelling.",
     rating: 5,
-    avatar: "https://i.pravatar.cc/150?img=13",
+    avatar:
+      "https://images.pexels.com/photos/7288892/pexels-photo-7288892.jpeg",
   },
   {
     id: 4,
@@ -36,7 +39,8 @@ const testimonials = [
     review:
       "Beautiful ambience, friendly staff, and great attention to detail. I would definitely consider staying here again.",
     rating: 5,
-    avatar: "https://i.pravatar.cc/150?img=44",
+    avatar:
+      "https://images.pexels.com/photos/9127300/pexels-photo-9127300.jpeg",
   },
   {
     id: 5,
@@ -45,7 +49,8 @@ const testimonials = [
     review:
       "The overall experience was smooth and comfortable. The hotel offers a welcoming environment and attentive service.",
     rating: 5,
-    avatar: "https://i.pravatar.cc/150?img=14",
+    avatar:
+      "https://images.pexels.com/photos/14768018/pexels-photo-14768018.jpeg",
   },
   {
     id: 6,
@@ -54,9 +59,11 @@ const testimonials = [
     review:
       "A pleasant stay with a relaxing atmosphere. The staff made us feel welcome, and the property was well maintained.",
     rating: 5,
-    avatar: "https://i.pravatar.cc/150?img=49",
+    avatar:
+      "https://images.pexels.com/photos/12257270/pexels-photo-12257270.jpeg",
   },
 ];
+
 
 function TestimonialCard({ testimonial }) {
   return (
