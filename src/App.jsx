@@ -22,11 +22,14 @@ import WeddingPackagePage from "./Website/WeddingPackagePage";
 import ContactPage from "./Website/Contact.jsx";
 import BlogDetailPage from "./Website/BlogDetailPage.jsx";
 
+import SEO from "./Component/SEO.jsx";
+
 export default function App() {
     return (
     <BrowserRouter>
       <ScrollToTop />
-
+          <SEO />
+          
       <Routes>
   <Route path="/" element={<Home />} />
 
